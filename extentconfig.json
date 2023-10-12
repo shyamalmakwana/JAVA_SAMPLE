@@ -1,0 +1,14 @@
+{
+	"theme": "STANDARD",
+	"encoding": "utf-8",
+	"protocol": "HTTPS",
+	"timelineEnabled": true,
+	"offlineMode": true,
+	"thumbnailForBase64": true,
+	"documentTitle": "AutomationReport",
+	"reportName": "OMNI_Automation Report",
+	"reportHeadline": "CPT Application",
+	"timeStampFormat": "dd MMM, yyyy hh:mm:ss a",
+	"js": "",
+	"css": ""
+}
