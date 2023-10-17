@@ -19,7 +19,7 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Build with Maven
-      run: mvn -B package --file pom.xml
+      run: mvn clean install -U
     - name: run testng.xml  
       run: mvn test -D suite=src/test/resources/runner/testng.xml
       
