@@ -1,9 +1,11 @@
 package com.omni.driver;
 
+import java.lang.reflect.Method;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Objects;
 
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.edge.EdgeDriver;
@@ -13,41 +15,38 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.safari.SafariDriver;
 
 import com.omni.utilities.ReadPropertyFile;
-import com.omni.utilities.ReadPropertyFile;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 
 public class Driver {
 	DriverManager driverManager = new DriverManager();
 	ReadPropertyFile readPropertyFile = new ReadPropertyFile();
+	String testClass = getClass().getName().substring(getClass().getName().lastIndexOf(".") + 1);
 
 	// This method will initialize the specific browser, passed in the config.properties file and open the browser.
-	public ChromeOptions browserOptions(){
+	public ChromeOptions browserOptions(String testClassName){
 		ChromeOptions browserOptions = new ChromeOptions();
 		browserOptions.setPlatformName("Windows 10");
 		browserOptions.setBrowserVersion("90.0");
 		HashMap<String, Object> ltOptions = new HashMap<String, Object>();
-		ltOptions.put("username", "smittalpaymentus");
-		ltOptions.put("accessKey", "CUhxibXYY6CVPbwPabDtmqTD8ROVitI6YBoYfiAGRnertsyUiQ");
-		ltOptions.put("visual", true);
 		ltOptions.put("video", true);
 		ltOptions.put("timezone", "Kolkata");
 		ltOptions.put("build", "Automation");
-		ltOptions.put("project", "Chaikin-Analytics-OMNI-QA Private");
-		ltOptions.put("name", "Omni");
+		ltOptions.put("project", "Chaikin-Analytics-OMNI-QA");
+		ltOptions.put("name",testClassName);
 		ltOptions.put("w3c", true);
 		ltOptions.put("plugin", "java-testNG");
 		browserOptions.setCapability("LT:Options", ltOptions);
 		return browserOptions;
 	}
-	@SuppressWarnings("deprecation")
 
-	public void initDriver() throws Exception {
+	public void initDriver(String testClass) throws Exception {
 		if (Objects.isNull(driverManager.getDriver())) {
 			switch (readPropertyFile.get("browser")) {
 
 				case "remote":
-					RemoteWebDriver driver=	new RemoteWebDriver(new URL("https://" + readPropertyFile.get("lambdaTestUsername") + ":" + readPropertyFile.get("lambdaTestAccessKey") + readPropertyFile.get("lambdaTestHubUrl")), browserOptions());
+					Method Method = null;
+					RemoteWebDriver driver=	new RemoteWebDriver(new URL("https://" + readPropertyFile.get("lambdaTestUsername") + ":" + readPropertyFile.get("lambdaTestAccessKey") + readPropertyFile.get("lambdaTestHubUrl")), browserOptions(testClass));
 					driverManager.setDriver(driver);
 					break;
 
@@ -102,4 +101,8 @@ public class Driver {
 			driverManager.unload();
 		}
 	}
+	//This method will provide LambdaTest status on dashboard passed/failed/skipped
+	public void executeScript(String lambdaTestStatus) throws Exception {
+		((JavascriptExecutor) driverManager.getDriver()).executeScript(lambdaTestStatus);
+}
 }

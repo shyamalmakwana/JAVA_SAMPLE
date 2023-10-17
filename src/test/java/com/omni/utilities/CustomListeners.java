@@ -71,7 +71,8 @@ public class CustomListeners implements ITestListener, ISuiteListener {
 			TestUtil testUtil = new TestUtil();
 			testUtil.captureScreenshot();
 			ExtentLogger.pass("<b>" + "<font color=" + "green>" + "Screenshot: " + "</font>" + "</b>", MediaEntityBuilder.createScreenCaptureFromPath(testUtil.screenshotName).build());
-		} catch (IOException e) {
+			driver.executeScript("lambda-status=passed");
+		} catch (Exception e) {
 
 		}
 	}
@@ -83,7 +84,8 @@ public class CustomListeners implements ITestListener, ISuiteListener {
 
 			testUtil.captureScreenshot();
 			ExtentLogger.fail("<b>" + "<font color=" + "red>" + "Screenshot of failure" + "</font>" + "</b>", MediaEntityBuilder.createScreenCaptureFromPath(testUtil.screenshotName).build());
-		} catch (IOException e) {
+			driver.executeScript("lambda-status=failed");
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		String failureLogg = "TEST CASE FAILED";
@@ -96,5 +98,10 @@ public class CustomListeners implements ITestListener, ISuiteListener {
 		String logText = "<b>" + "Test Case:- " + methodName + " is Skipped" + "</b>";
 		Markup m = MarkupHelper.createLabel(logText, ExtentColor.YELLOW);
 		ExtentLogger.skip(m);
+		try {
+			driver.executeScript("lambda-status=skipped");
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
 	}
 }

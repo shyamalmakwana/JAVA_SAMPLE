@@ -2,6 +2,7 @@ package com.omni.base;
 
 import java.lang.reflect.Method;
 
+import org.testng.ITestContext;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.AfterTest;
@@ -18,8 +19,8 @@ public class BaseTest {
 
 	@BeforeTest
 	// This method will open the browser and enter the url.
-	public void initBrowser() throws Exception {
-		driver.initDriver();
+	public void initBrowser(ITestContext m) throws Exception {
+		driver.initDriver(m.getName());
 	}
 	
 	@BeforeClass
