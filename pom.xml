@@ -5,7 +5,19 @@
 	<groupId>com.omni</groupId>
 	<artifactId>omni_qa</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.1</version>
+				<configuration>
+					<source>18</source> <!-- Specify Java 18 as the source version -->
+					<target>18</target> <!-- Specify Java 18 as the target version -->
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 
 	<properties>
 		<maven.compiler.source>18</maven.compiler.source>
